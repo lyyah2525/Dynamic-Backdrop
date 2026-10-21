@@ -1,0 +1,36 @@
+# OS metadata
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Editor / tooling
+node_modules/
+.vscode/
+.idea/
+*.swp
+
+# Installer leftovers — install.command stages into <target>.installing-<stamp>
+# and rolls back to <target>.backup-<stamp> on failure. Neither should ever be
+# committed; both contain a full copy of the plugin.
+*.installing-*
+*.backup-*
+
+# Packaging output — 打包最新版本.command writes these to the project root.
+dynamic-backdrop-*.tar.gz
+dynamic-backdrop-*.zip
+
+# Local media library.
+#
+# The bundled videos in dynamic-backdrop/*.mp4 are symlinks to ../../media/. A
+# clone without this directory gets broken links rather than missing files, which
+# is confusing to debug; the media/ tree itself is 39 MB of video that does not
+# belong in a source repository.
+media/
+
+# Historical version snapshots, kept locally only.
+old/
+
+# Local configuration snapshots.
+灵动舞台-设置备份/
+迁移前快照-*.json
