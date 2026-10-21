@@ -172,11 +172,11 @@ Cmd/Ctrl + K → Reload desktop plugins
 dynamic-backdrop-v1.0.0/
 ├── dynamic-backdrop/
 │   ├── plugin.js                               插件本体
-│   ├── Mornye-EP-Unwritten-in-the-Stars.mp4    默认视频（路径留空时播放）
-│   ├── Mornye.mp4                              内置视频库
-│   ├── Denia.mp4                               内置视频库
-│   ├── Denia-Heart.mp4                         内置视频库
-│   ├── Denia-Bubble.mp4                        内置视频库
+│   ├── 默认视频.mp4                             默认视频（路径留空时播放）
+│   ├── 内置视频库1.mp4                           内置视频库
+│   ├── 内置视频库2.mp4                           内置视频库
+│   ├── 内置视频库3.mp4                           内置视频库
+│   ├── 内置视频库4.mp4                           内置视频库
 │   └── .dynamic-backdrop                       安装脚本用于校验的标识文件
 ├── scripts/
 │   └── install.command / uninstall.command
