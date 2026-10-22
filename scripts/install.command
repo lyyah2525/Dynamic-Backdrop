@@ -51,7 +51,10 @@ if command -v node >/dev/null 2>&1; then
 # Behaviour tests. A static checker cannot see a broken closure or a skipped advance, and
 # these tests used to live in a scratch directory that got cleaned away — putting them in
 # the repo and running them here is what keeps that from happening again.
-node "$PROJECT_ROOT/tests/behavior-probe.mjs" "$SOURCE/plugin.js" > /dev/null \
+# Both streams are discarded, not just stdout. The probe loads plugin.js, so any
+# console output the plugin leaves behind lands here — that is how three debug traces
+# from an earlier investigation ended up printed during a normal install.
+node "$PROJECT_ROOT/tests/behavior-probe.mjs" "$SOURCE/plugin.js" > /dev/null 2>&1 \
   || fail "行为测试未通过（单独运行看详情：node tests/behavior-probe.mjs dynamic-backdrop/plugin.js）"
 fi
 

@@ -1347,13 +1347,14 @@ check(/if \(Date\.now\(\) - menuGestureAt < MENU_GESTURE_MS\) return/.test(posIn
 check(/Array\.isArray\(formRef\.current\.rotationPaths\)/.test(plugin),
   'commitPosition must read the list from formRef, not a possibly stale closure')
 
-// ---- a launch trace must exist ------------------------------------------------
-// Three different causes produce the same symptom (toggle off / not in rotate mode /
-// empty list), so one line has to name which.
-check(/\[db-launch\] mode=/.test(plugin), 'the launch trace is missing')
-check(/onStartup=\$\{cfg\.rotationOnStartup\}/.test(plugin),
-  'the trace must report the startup toggle')
-check(/list=\$\{rotationList\(\)\.length\}/.test(plugin), 'the trace must report the list size')
+// ---- no debug output may ship -------------------------------------------------
+// A launch trace lived here through v1.0.0: three console.error calls added while
+// diagnosing 「启动时切换一次」. They wrote to the browser console on every launch, and
+// leaked into install output because the probe loads plugin.js. Asserted absent so it
+// cannot come back by accident.
+check(!/console\.(log|error|warn|info|debug)\(/.test(plugin),
+  'plugin.js must not log to the console in a release build')
+check(!/\[db-launch\]|\[db-startup\]/.test(plugin), 'the old debug traces must not return')
 
 // ---- the three text fields must behave the same way ---------------------------
 // Enter commits, Escape abandons. The paste field shipped with Enter only, so the sole way

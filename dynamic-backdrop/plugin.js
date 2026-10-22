@@ -1547,9 +1547,6 @@ function seedRotation() {
     if (sibling) {
       const current = readRotationCursor()
       runtime.rotationPath = current && list.includes(current) ? current : list[0]
-      try {
-        console.error(`[db-startup] SKIP sibling beat=${Date.now() - live}ms -> ${runtime.rotationPath}`)
-      } catch { /* logging is optional */ }
       return runtime.rotationPath
     }
 
@@ -1566,10 +1563,6 @@ function seedRotation() {
       runtime.rotationPath = from < 0 ? list[0] : list[(from + 1) % list.length]
     }
     writeRotationCursor(runtime.rotationPath)
-    // One line per launch, so "did not switch" can be told apart from "never ran".
-    try {
-      console.error(`[db-startup] list=${list.length} from=${prev || '(none)'} -> ${runtime.rotationPath} beat=${live ? `${Date.now() - live}ms(stale)` : '(none)'}`)
-    } catch { /* logging is optional */ }
     return runtime.rotationPath
   }
 
@@ -3614,15 +3607,6 @@ export default {
     if (runtime.migrated) saveConfig(ctx)
     resolveDefaultPath().then(() => {
       const result = runCompatibilityCheck({ notifyResult: true })
-      // Unconditional launch trace. 「启动时切换一次」has three ways to do nothing —
-      // the toggle is off, the profile is not in rotate mode, or the list is empty — and
-      // from the outside all three look identical. One line names which one it is.
-      try {
-        console.error(`[db-launch] mode=${cfg.playMode} onStartup=${cfg.rotationOnStartup}`
-          + ` shuffle=${cfg.rotationShuffle} list=${rotationList().length}`
-          + ` cursor=${JSON.stringify(readRotationCursor())}`
-          + ` level=${result.level}`)
-      } catch { /* logging is optional */ }
       if (result.level !== 'blocked') {
         // Seed BEFORE the heartbeat. Writing the beat first made this window look like a
         // sibling of itself: seedRotation read its own fresh beat and skipped the advance,
